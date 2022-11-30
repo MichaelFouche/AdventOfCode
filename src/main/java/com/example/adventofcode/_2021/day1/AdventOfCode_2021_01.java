@@ -1,4 +1,4 @@
-package com.example.adventofcode;
+package com.example.adventofcode._2021.day1;
 
 import java.util.ArrayList;
 import java.util.Arrays;
