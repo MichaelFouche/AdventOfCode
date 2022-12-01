@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import com.example.adventofcode._2021.day1.AdventOfCode_2021_01;
 import com.example.adventofcode._2021.day2.AdventOfCode_2021_02;
 import com.example.adventofcode._2021.day3.AdventOfCode_2021_03;
+import com.example.adventofcode._2022.day1.AdventOfCode_2022_01;
 
 
 @SpringBootApplication
@@ -21,7 +22,10 @@ public class AdventofcodeApplication {
 //        day2.runScenario();
         
         AdventOfCode_2021_03 day3 = new AdventOfCode_2021_03();
-        day3.runScenario();
+//        day3.runScenario();
+    
+        AdventOfCode_2022_01 day1_2022 = new AdventOfCode_2022_01();
+        day1_2022.runScenario();
         
     }
     
