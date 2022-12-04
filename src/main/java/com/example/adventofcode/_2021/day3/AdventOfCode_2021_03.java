@@ -58,6 +58,7 @@ public class AdventOfCode_2021_03 {
                 gammaRate += "1";
                 epsilonRate += "0";
             }
+            //iterate over all again and remove the matching items from list
         }
     
         System.out.println("Gamma rate " + gammaRate + ": " + Integer.parseInt(gammaRate,2));
