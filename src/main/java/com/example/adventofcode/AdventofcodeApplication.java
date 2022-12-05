@@ -10,6 +10,7 @@ import com.example.adventofcode._2022.day1.AdventOfCode_2022_01;
 import com.example.adventofcode._2022.day2.AdventOfCode_2022_02;
 import com.example.adventofcode._2022.day3.AdventOfCode_2022_03;
 import com.example.adventofcode._2022.day4.AdventOfCode_2022_04;
+import com.example.adventofcode._2022.day5.AdventOfCode_2022_05;
 
 
 @SpringBootApplication
@@ -37,7 +38,10 @@ public class AdventofcodeApplication {
 //        day3_2022.runScenario();
         
         AdventOfCode_2022_04 day4_2022 = new AdventOfCode_2022_04();
-        day4_2022.runScenario();
+//        day4_2022.runScenario();
+        
+        AdventOfCode_2022_05 day5_2022 = new AdventOfCode_2022_05();
+        day5_2022.runScenario();
         
     }
     
