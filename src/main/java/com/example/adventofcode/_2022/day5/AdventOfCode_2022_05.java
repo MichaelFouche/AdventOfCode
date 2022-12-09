@@ -146,8 +146,12 @@ public class AdventOfCode_2022_05 {
             List<String> movingFromStack = stackList.get(boardMoveFrom);
             List<String> movingToStack = stackList.get(boardMoveTo);
             printAllStack(stackList);
+            List<String> itemsWeAreGoingToMove = new ArrayList<>();
             for (int j = 0; j < boardToMove; j++) {
-                movingToStack.add(0,movingFromStack.get(j));
+                itemsWeAreGoingToMove.add(0,movingFromStack.get(j));
+            }
+            for (int j = 0; j < itemsWeAreGoingToMove.size(); j++) {
+                movingToStack.add(0,itemsWeAreGoingToMove.get(j));
             }
             int startingSize = movingFromStack.size();
             for (int j = 0; j < boardToMove; j++) {

@@ -11,6 +11,9 @@ import com.example.adventofcode._2022.day2.AdventOfCode_2022_02;
 import com.example.adventofcode._2022.day3.AdventOfCode_2022_03;
 import com.example.adventofcode._2022.day4.AdventOfCode_2022_04;
 import com.example.adventofcode._2022.day5.AdventOfCode_2022_05;
+import com.example.adventofcode._2022.day6.AdventOfCode_2022_06;
+import com.example.adventofcode._2022.day8.AdventOfCode_2022_08;
+import com.example.adventofcode._2022.day9.AdventOfCode_2022_09;
 
 
 @SpringBootApplication
@@ -41,8 +44,21 @@ public class AdventofcodeApplication {
 //        day4_2022.runScenario();
         
         AdventOfCode_2022_05 day5_2022 = new AdventOfCode_2022_05();
-        day5_2022.runScenario();
-        
+//        day5_2022.runScenario();
+    
+        AdventOfCode_2022_06 day6_2022 = new AdventOfCode_2022_06();
+//        day6_2022.runScenario();
+    
+//        day7_2022.runScenario();
+    
+        AdventOfCode_2022_08 day8_2022 = new AdventOfCode_2022_08();
+//        day8_2022.runScenario();
+    
+    
+        AdventOfCode_2022_09 day9_2022 = new AdventOfCode_2022_09();
+        day9_2022.runScenario();
+    
+    
     }
     
 }
