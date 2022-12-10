@@ -16,7 +16,7 @@ public class AdventOfCode_2022_09 {
     HashMap<Integer, HashSet<String>> uniqueTailPositions = new HashMap<>();
     
     public void runScenario(){
-        List<String[]> testList = retrieveInstructions("src/main/java/com/example/adventofcode/_2022/day9/TestInstructions.txt");//Instructions
+        List<String[]> testList = retrieveInstructions("src/main/java/com/example/adventofcode/_2022/day9/Instructions.txt");//Instructions
         interpretInstructions(testList);
     }
     
