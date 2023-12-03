@@ -3,7 +3,9 @@ package com.example.adventofcode._2023.day3;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 
@@ -11,12 +13,16 @@ public class AdventOfCode_2023_03 {
     
     public void runScenario(){
         List<String> testList = retrieveInstructions("src/main/java/com/example/adventofcode/_2023/day3/TestInstructions.txt");
-        interpretInstructions(testList);
+//        interpretInstructions(testList);
     
-        System.out.println("---2023---");
+        System.out.println("---2023 day 3---");
         
         List<String> list = retrieveInstructions("src/main/java/com/example/adventofcode/_2023/day3/Instructions.txt");
-//        interpretInstructions(list);
+        interpretInstructions(list);
+        //528369
+        //Part 2
+        //84907342
+        //84900879
     }
 
     private List<String> retrieveInstructions(String fileName) {
@@ -41,18 +47,227 @@ public class AdventOfCode_2023_03 {
     private int interpretInstructions(List<String> instructionList) {
         int count = 0;
         int totalAnswer = 0;
+        List<Integer> validNumbers = new ArrayList();
+        Map<Integer, Integer> gearMultiplierCount = new HashMap<>();
 
-//        Stream.of(instructionList).map(a -> a + "").collect(Collectors.toList());
 
-        for (String instruction: instructionList) {
+        //BUILD MATRIX
+        int rowLength = instructionList.size();
+        int columnLength = instructionList.get(0).length();
+        String[][] matrix = new String[rowLength][columnLength];
+        for (int i = 0; i < rowLength; i++) {
+            String instruction = instructionList.get(i);
+            String[] columnLine = instruction.split("");
+            for (int j = 0; j < columnLength; j++) {
+                matrix[i][j] = columnLine[j];
+            }
+        }
 
-            String[] line = instruction.split(":");
-
+        //PRINT MATRIX
+        System.out.println("\nPRINTING MATRIX\n----");
+        for (int i = 0; i < rowLength; i++) {
+            System.out.println();
+            for (int j = 0; j < columnLength; j++) {
+                System.out.print(matrix[i][j]);
+            }
 
         }
+
+
+
+        //FIND ALL * and confirm if they have 2 numbers.
+        //ADD numbers to whiteList
+        //If number is in whiteList then use
+        //NEED TO group numbers next to * as they need to add up together.
+
+
+        int gearCount = 0;
+        String[][] matrixWhiteList = new String[rowLength][columnLength];
+        for (int i = 0; i < rowLength; i++) {
+            for (int j = 0; j < columnLength; j++) {
+                if(matrix[i][j].equals("*") && countAdjacentNumber(matrix, i, j)==2 ){
+                    try{matrixWhiteList[i-1][j-1] = String.valueOf(gearCount);}catch (Exception e) {}
+                    try{matrixWhiteList[i][j-1] = String.valueOf(gearCount);}catch (Exception e) {}
+                    try{matrixWhiteList[i+1][j-1] = String.valueOf(gearCount);}catch (Exception e) {}
+
+                    try{matrixWhiteList[i-1][j] = String.valueOf(gearCount);}catch (Exception e) {}
+                    try{matrixWhiteList[i][j] = String.valueOf(gearCount);}catch (Exception e) {}
+                    try{matrixWhiteList[i+1][j] = String.valueOf(gearCount);}catch (Exception e) {}
+
+                    try{matrixWhiteList[i-1][j+1] = String.valueOf(gearCount);}catch (Exception e) {}
+                    try{matrixWhiteList[i][j+1] = String.valueOf(gearCount);}catch (Exception e) {}
+                    try{matrixWhiteList[i+1][j+1] = String.valueOf(gearCount);}catch (Exception e) {}
+                    gearCount = gearCount +1;
+                }
+            }
+
+        }
+
+        //PRINT WHITE MATRIX
+        System.out.println("\nPRINTING WhiteList MATRIX");
+        for (int i = 0; i < rowLength; i++) {
+            System.out.println();
+            for (int j = 0; j < columnLength; j++) {
+                if(matrixWhiteList[i][j] != null) {
+                    System.out.print(matrixWhiteList[i][j]);
+                } else {
+                    System.out.print(".");
+                }
+            }
+
+        }
+
+        System.out.println("\n\nGETTING NUMBERS\n----");
+        //GET NUMBERS
+        int rowPosition = 0;
+
+        for (String instruction: instructionList) {
+            instruction = instruction + ".";
+            String[] line = instruction.split("");
+            String numberBuilder = "";
+            boolean previousWasNumber = false;
+            boolean hadSymbolNextToNumber = false;
+            boolean numberIsOnWhiteList = false;
+            int columnPosition = 0;
+            int gearNumber = 0;
+            for (String linePosition : line) {
+                if (containsNumericNumber(linePosition)) {
+                    numberBuilder = numberBuilder + linePosition;
+                    previousWasNumber = true;
+                    if(checkIfHasSymbol(matrix, rowPosition, columnPosition)) {
+                        hadSymbolNextToNumber = true;
+                        if(matrixWhiteList[rowPosition][columnPosition]!= null) {
+                            numberIsOnWhiteList = true;
+                            gearNumber = Integer.valueOf(matrixWhiteList[rowPosition][columnPosition]);
+                        }
+                    }
+//                    System.out.print("["+rowPosition +""+ columnPosition+ "]");
+                } else if (previousWasNumber){
+                    if(hadSymbolNextToNumber) {
+                        //check number is on whiteList
+                        if(numberIsOnWhiteList) {
+                            validNumbers.add(Integer.valueOf(numberBuilder));
+                            if(gearMultiplierCount.get(gearNumber) != null){
+                                gearMultiplierCount.replace(gearNumber, gearMultiplierCount.get(gearNumber) * Integer.valueOf(numberBuilder));
+                            } else {
+                                gearMultiplierCount.put(gearNumber, Integer.valueOf(numberBuilder));
+                            }
+                        }
+                    }
+                    previousWasNumber = false;
+                    hadSymbolNextToNumber = false;
+                    numberIsOnWhiteList = false;
+                    numberBuilder = "";
+
+                }
+                System.out.print(linePosition);
+                columnPosition = columnPosition +1;
+
+            }
+
+            System.out.println();
+            rowPosition = rowPosition +1;
+        }
+        System.out.println();
+
+        //ALL THE NUMBERS
+        int sum = 0;
+        for (int number: validNumbers) {
+            sum = sum + number;
+            System.out.println(number);
+        }
+
+
+        System.out.println("\nSUM: " + sum);
 //        Collections.sort(newList, Collections.reverseOrder());
+        Integer newCount = 0;
+        for (int gearSums:gearMultiplierCount.values()) {
+            System.out.println("RATIOS: " + gearSums);
+            newCount = newCount + gearSums;
+        }
+        System.out.println("GEAR COUNT " + newCount);
 
         return 0;
+    }
+
+
+    private int countAdjacentNumber(String[][] matrix, int rowPosition, int columnPosition) {
+        int numbersAdjacent = 0;
+        boolean hasSymbol = false;
+        boolean hadNumberLeftTop = false;
+        boolean hadNumberCenterTop = false;
+        boolean hadNumberLeftBottom = false;
+        boolean hadNumberCenterBottom = false;
+
+        //TOP
+        try {if (containsNumericNumber(matrix[rowPosition - 1][columnPosition - 1])) {numbersAdjacent = numbersAdjacent +1;hadNumberLeftTop = true;}} catch (Exception e) {}
+        try {if (containsNumericNumber(matrix[rowPosition-1][columnPosition])) {
+            if(!hadNumberLeftTop) {
+                numbersAdjacent = numbersAdjacent +1;
+            }
+            hadNumberCenterTop = true;
+        }} catch (Exception e) {}
+        try {if (containsNumericNumber(matrix[rowPosition - 1][columnPosition + 1])) {
+            if(!hadNumberCenterTop) {
+                numbersAdjacent = numbersAdjacent +1;
+            }
+        }} catch (Exception e) {}
+
+        //MIDDLE
+        try {if (containsNumericNumber(matrix[rowPosition][columnPosition -1])) {numbersAdjacent = numbersAdjacent +1;}} catch (Exception e) {}
+        try {if (containsNumericNumber(matrix[rowPosition][columnPosition +1])) {numbersAdjacent = numbersAdjacent +1;}} catch (Exception e) {}
+
+        //BOTTOM
+        try {if (containsNumericNumber(matrix[rowPosition + 1][columnPosition -1])) {numbersAdjacent = numbersAdjacent +1;hadNumberLeftBottom = true;}} catch (Exception e) {}
+        try {if (containsNumericNumber(matrix[rowPosition +1 ][columnPosition])) {
+            if(!hadNumberLeftBottom) {
+                numbersAdjacent = numbersAdjacent +1;
+            }
+            hadNumberCenterBottom = true;
+        }} catch (Exception e) {}
+        try {if (containsNumericNumber(matrix[rowPosition + 1][columnPosition +1])) {
+            if(!hadNumberCenterBottom) {
+                numbersAdjacent = numbersAdjacent +1;
+            }
+        }} catch (Exception e) {}
+
+        return numbersAdjacent;
+    }
+
+    private boolean checkIfHasNumber(String[][] matrix, int rowPosition, int columnPosition) {
+
+        boolean hasSymbol = false;
+        try {if (containsNumericNumber(matrix[rowPosition - 1][columnPosition - 1])) {return true;}} catch (Exception e) {}
+        try {if (containsNumericNumber(matrix[rowPosition][columnPosition - 1])) {return true;}} catch (Exception e) {}
+        try {if (containsNumericNumber(matrix[rowPosition + 1][columnPosition - 1])) {return true;}} catch (Exception e) {}
+
+        try {if (containsNumericNumber(matrix[rowPosition - 1][columnPosition ])) {return true;}} catch (Exception e) {}
+        try {if (containsNumericNumber(matrix[rowPosition ][columnPosition ])) {return true;}} catch (Exception e) {}
+        try {if (containsNumericNumber(matrix[rowPosition + 1][columnPosition ])) {return true;}} catch (Exception e) {}
+
+        try {if (containsNumericNumber(matrix[rowPosition - 1][columnPosition +1])) {return true;}} catch (Exception e) {}
+        try {if (containsNumericNumber(matrix[rowPosition ][columnPosition +1])) {return true;}} catch (Exception e) {}
+        try {if (containsNumericNumber(matrix[rowPosition + 1][columnPosition +1])) {return true;}} catch (Exception e) {}
+
+        return hasSymbol;
+    }
+
+    private boolean checkIfHasSymbol(String[][] matrix, int rowPosition, int columnPosition) {
+
+        boolean hasSymbol = false;
+        try {if (containsSymbol(matrix[rowPosition - 1][columnPosition - 1])) {return true;}} catch (Exception e) {}
+        try {if (containsSymbol(matrix[rowPosition][columnPosition - 1])) {return true;}} catch (Exception e) {}
+        try {if (containsSymbol(matrix[rowPosition + 1][columnPosition - 1])) {return true;}} catch (Exception e) {}
+
+        try {if (containsSymbol(matrix[rowPosition - 1][columnPosition ])) {return true;}} catch (Exception e) {}
+        try {if (containsSymbol(matrix[rowPosition ][columnPosition ])) {return true;}} catch (Exception e) {}
+        try {if (containsSymbol(matrix[rowPosition + 1][columnPosition ])) {return true;}} catch (Exception e) {}
+
+        try {if (containsSymbol(matrix[rowPosition - 1][columnPosition +1])) {return true;}} catch (Exception e) {}
+        try {if (containsSymbol(matrix[rowPosition ][columnPosition +1])) {return true;}} catch (Exception e) {}
+        try {if (containsSymbol(matrix[rowPosition + 1][columnPosition +1])) {return true;}} catch (Exception e) {}
+
+        return hasSymbol;
     }
 
 
@@ -76,6 +291,14 @@ public class AdventOfCode_2023_03 {
 
     private boolean containsNumber(String line) {
         return (line.contains("one") || line.contains("two") || line.contains("three") || line.contains("four") || line.contains("five") || line.contains("six") || line.contains("seven") || line.contains("eight") || line.contains("nine") );
+    }
+
+    private boolean containsSymbol(String line) {
+        return (!line.contains(".") && !containsNumericNumber(line) );
+    }
+
+    private boolean containsNumericNumber(String line) {
+        return (line.contains("1") || line.contains("2") || line.contains("3") || line.contains("4") || line.contains("5") || line.contains("6") || line.contains("7") || line.contains("8") || line.contains("9")|| line.contains("0") );
     }
 
     private int replaceNumber(String scenario) {
