@@ -15,6 +15,9 @@ import com.example.adventofcode._2022.day5.AdventOfCode_2022_05;
 import com.example.adventofcode._2022.day6.AdventOfCode_2022_06;
 import com.example.adventofcode._2022.day8.AdventOfCode_2022_08;
 import com.example.adventofcode._2022.day9.AdventOfCode_2022_09;
+import com.example.adventofcode._2023.day1.AdventOfCode_2023_01;
+import com.example.adventofcode._2023.day2.AdventOfCode_2023_02;
+import com.example.adventofcode._2023.day3.AdventOfCode_2023_03;
 
 
 @SpringBootApplication
@@ -60,8 +63,19 @@ public class AdventofcodeApplication {
 //        day9_2022.runScenario();
     
         AdventOfCode_2022_10 day10_2022 = new AdventOfCode_2022_10();
-        day10_2022.runScenario();
+//        day10_2022.runScenario();
+
+        AdventOfCode_2023_01 day01_2023 = new AdventOfCode_2023_01();
+//        day01_2023.runScenario();
+
+        AdventOfCode_2023_02 day02_2023 = new AdventOfCode_2023_02();
+//        day02_2023.runScenario();
+
+        AdventOfCode_2023_03 day03_2023 = new AdventOfCode_2023_03();
+        day03_2023.runScenario();
     
+//        DelimitedList delimitedList = new DelimitedList();
+//        delimitedList.solveDelimitedProblem();
     
     }
     

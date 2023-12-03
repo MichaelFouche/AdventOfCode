@@ -2,7 +2,11 @@ package com.example.adventofcode._2022.day10;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Scanner;
 
 import com.example.adventofcode._2022.CodeSnippetManager;
 
@@ -18,7 +22,7 @@ public class AdventOfCode_2022_10 {
     int sum = 0;
     
     public void runScenario(){
-        List<String[]> testList = retrieveInstructions("src/main/java/com/example/adventofcode/_2022/day10/Instructions.txt");//TestInstructions
+        List<String[]> testList = retrieveInstructions("src/main/java/com/example/adventofcode/_2022/day10/TestInstructions.txt");//TestInstructions
         interpretInstructions(testList);
     }
     
